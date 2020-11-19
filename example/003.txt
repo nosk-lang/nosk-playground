@@ -1,0 +1,14 @@
+module Example
+  ( fromOption
+  ) where
+
+Builtin ( Int , + , * )
+
+declare fromOption : <Int,Int> -> Int
+as \z -> case z of
+  { <x,y> ->
+    let w = x + y in
+    let v = w + w in
+    v + 6
+  }
+end

@@ -1,0 +1,74 @@
+Next Steps
+
+* [Complete] Get rid of typechain. Disallow curried application of type constructors.
+* [Complete] Finish handling join points in the renamer. Figure out if
+  jump should have dedicated syntax or not. Join points probably
+  should not be in the same namespace as functions. I do not think
+  that they are in the paper. If they are in separate namespaces,
+  then we can probably do without a jump keyword. I did end up doing
+  separate namespaces, but I kept the syntactic indicator of jumping
+  as well.
+* [Complete] Add kinds.
+* [Complete] Add typechecking. I'm not exactly sure how to deal with representation kinds,
+  but I'll see what I can come up with. How about ignoring kinds and then doing
+  a check at the end to make sure the type solutions agree with kinds? Any time
+  another representation-polymorphic top-level function is used, it must be
+  instantiated to a particular kind, and that kind must either be a constant
+  or a variable from the kind signatature of the calling function. To make this
+  work, we must decorate the expression tree with types. Can Simple and Complete
+  do this? Let's find out.
+* [Complete] I'm working on typechecking. The next step here is to combine the
+  Type used in Poly.Typecheck and the one in Poly.Unchained. Then, I need
+  to make most of the typechecking functions in Poly.Typecheck accept a
+  global environment. This should include not just imported things but also
+  everything that may be needed during typechecking. It must include
+  builtins like add and Int. It is not totally clear to me whether it is
+  better to just shove type information for identifiers directly into
+  Var, but for the moment, I'm content to not do that and just look up
+  things like this in the global context.
+* [Complete] Add analogue of no-inference arrow rule for tuples 
+* [Partially Complete] Desugar deep pattern matching. Do this when going from Resolved
+  to Unchained. That is, given:
+
+      foo = \x -> case x of
+        <a,b,<c,d>> -> e
+
+  Turn it into:
+
+      foo = \x -> case x of
+        <a,b,z0> -> case z0 of
+          <c,d> -> e
+
+  With tuples (products), this should be pretty straightforward. When sums
+  are involved, I think it can get a little more tricky, but that is not
+  something I am concerned about at the moment.
+* Introduce syntax for projecting out of tuples. For example, `x.0`, `x.1`, etc.
+  Should this desugar to pattern matching or not? It probably should.
+* [Partially Complete] Allow introduction of kinds variable and of type variables to be
+  omitted in common cases.
+* Allow data types to be defined. I do not yet know how the type
+  synthesis rules for data constructors corresponding to type constructors
+  work. Figure this out. No need to support GADTs.
+* [Partially Complete] Remove all substitutions from type checker. I am
+  almost certain that these are not necessary.
+* [Complete] Type synthesis for let bindings. This extension is not
+  proved correct.
+* [Complete] Type check join points.
+* Additional pass to restrict join points to tail contexts. When complete,
+  example 017 will fail.
+* Annotate variables with types during typechecking. I am not sure if this
+  is actually necessary.
+* [Partially Complete] Optimizations. Easiest one first: dead code elimination.
+  Second: case on known data constructor. Both of these are guaranteed to improve
+  performance.
+* Think hard about the IRs involved in the compilation pipeline. We would like
+  to have a typed IR (like GHC Core) that can just be typechecked without doing
+  any inference (just checking, no synthesis). Of course, the devil is in the
+  details. Complete and Easy doesn't really correspond to System F. We need
+  something like System F (type applications at instantiation sites) but that
+  allows the flexible subsumption relationship that Complete and Easy offers.
+  I think that this can be done with casts. This IR will need some way to bring
+  type variables into scope though.
+* Beyond a typed core, we need a semi-typed IR with monomorphic representations.
+  Here, the representations become the types, and there is no polymorphism.
+  not 

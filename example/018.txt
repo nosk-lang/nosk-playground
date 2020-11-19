@@ -1,0 +1,16 @@
+module Example
+  ( succ
+  ) where
+
+Builtin ( Int , + , * )
+
+declare quadratic : <Int,Int,Int,Int> -> Int
+as \z -> case z of
+  { <a,b,c,x> ->
+      let squared = x * x in
+      let cubed = x * x * x in
+      a * squared + b * x + c
+  }
+end
+
+

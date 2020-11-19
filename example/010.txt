@@ -1,0 +1,10 @@
+module Example
+  ( myNumber
+  ) where
+
+Builtin ( Int , + , * )
+
+declare myId : rep %a. forall (a : %a). a -> a
+as \x -> x
+end
+

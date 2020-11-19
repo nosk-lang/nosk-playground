@@ -1,0 +1,24 @@
+module Example
+  ( succ
+  , succ2
+  ) where
+
+Builtin ( Int , + , * )
+
+declare succ : Int -> Int as \x ->
+  x + 1
+end
+
+declare succ2 : Int -> Int as \x ->
+  succ (succ x)
+end
+
+declare repeatedly : forall a. <Int, a -> a, a> -> a as \x -> case x of
+  { <count,f,z> ->
+    rec
+      { label step acc =
+          let next = f acc
+           in ^step next
+      } in ^step z
+  }
+end

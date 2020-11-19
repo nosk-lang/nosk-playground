@@ -1,0 +1,75 @@
+module Example
+  ( plusThree
+  , succ
+  ) where
+
+Builtin ( Int , + , * )
+
+declare succ : Int -> Int as \x ->
+  x + 1
+end
+
+declare plusThree : Int -> Int as \x ->
+  succ (succ (succ x))
+end
+
+declare identity :
+  forall (r : Rep) (a : r).
+    a -> a
+  as \x -> x
+end
+
+run : forall (r : Rep) (a : r). (forall (s : State). ST s a) -> a
+add : forall (w : Width) (i : Int w). i -> i -> i
+declare replicate :
+  forall (r : Rep) (a : Rep).
+    Int Signed 64 -> a -> List a
+  as ...
+end
+
+declare index :
+  forall (r : Rep) (a : r) (n : Number).
+       Array a | haslen n
+    -> Int | >= 0, < n
+    -> a
+
+-- Is mixing refinement variables with type variables ok?
+declare foldAscending :
+  forall (ra : Rep) (a : ra) (rb : Rep) (b : rb) (len : Number) (off : Number).
+       (b -> a -> b)
+    -> b
+    -> Array a | haslen len
+    -> Int | ==off
+    -> Int | <=(len-off)
+    -> b
+
+declare slice :
+  forall (ra : Rep) (a : ra) (oldlen : Number) (newlen : Number) (off : Number).
+       Int | >=0, <=len, ==off
+    -> Int | >=0, <=(oldlen-off), ==newlen
+    -> Array a | haslen oldlen
+    -> Array a | haslen newlen
+
+drop :
+  forall (ra : Rep) (a : ra) (oldlen : Number) (n : Number).
+       Int | >=0, ==n
+    -> Array a | haslen oldlen
+    -> Array a | haslen (oldlen - n)
+
+take :
+  forall (ra : Rep) (a : ra) (oldlen : Number) (n : Number).
+       Int | >=0, ==n, <=oldlen
+    -> Array a | haslen oldlen
+    -> Array a | haslen n
+
+length :
+  forall (ra : Rep) (a : ra) (n : Number).
+       Array a | haslen n
+    -> Int | == n
+
+
+declare replicate :
+  forall (ra : Rep) (a : ra) (len : Number).
+       Int | ==len
+    -> a
+    -> Array a | haslen len

@@ -1,0 +1,18 @@
+module Example
+  ( succ
+  , succ2
+  ) where
+
+Builtin ( Int , + , * )
+
+declare factorial : Int -> Int 
+as \x -> rec Int as
+  { join step (y : <Int,Int>) = case y of
+    { <acc,n> -> case n >? 1 of
+      { True -> 55 + ^step <acc * n, n - 1>
+      ; False -> acc
+      }
+    }
+  } in ^step <1,x>
+end
+

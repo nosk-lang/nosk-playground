@@ -1,0 +1,42 @@
+cabal-version: 2.4
+name: noskero
+version: 0.1.0.0
+license-file: LICENSE
+author: Andrew Martin
+maintainer: andrew.thaddeus@gmail.com
+build-type: Simple
+extra-source-files: CHANGELOG.md
+
+executable nosk
+  other-modules:
+    Common
+    Poly.Token
+    Poly.Check
+    Poly.Compile
+    Poly.Rename
+    Poly.Resolved
+    Poly.Unresolved
+    Poly.Unchained
+    Poly.Syntax
+    Poly.Associate
+    Poly.Typecheck
+    Poly.Flattened
+    Poly.Optimize.DeadCodeElimination
+    Mono.Expr
+  main-is: Main.hs
+  build-depends:
+    , base >=4.14 && <4.15
+    , containers
+    , text-short
+    , text
+    , primitive-unlifted
+    , primitive
+    , array-chunks
+    , array-builder
+    , bytesmith
+    , byteslice >= 0.2.4
+    , smith
+    , pretty-show
+    , transformers
+  hs-source-dirs: app
+  default-language: Haskell2010

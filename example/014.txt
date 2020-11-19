@@ -1,0 +1,14 @@
+module Example
+  ( cubic
+  ) where
+
+Builtin ( Int , + , * )
+
+declare cubic : <Int,Int,Int,Int> -> Int -> Int
+as \constants -> case constants of
+  { <a,b,c,d> -> \x ->
+      let squared = x * x in
+      let cubed = squared * x in
+      a * cubed + b * squared + c * x + d
+  }
+end

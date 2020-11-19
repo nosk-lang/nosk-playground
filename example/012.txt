@@ -1,0 +1,9 @@
+module Example
+  ( myNumber
+  ) where
+
+Builtin ( Int , + , * )
+
+declare myId : forall (a : Word). a -> (forall (x : Word). x -> x) -> a
+as \v -> \f -> f v
+end

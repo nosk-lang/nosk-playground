@@ -1,0 +1,6 @@
+module Example
+  ( succ
+  , succ2
+  ) where
+
+Builtin ( Int , + , * )

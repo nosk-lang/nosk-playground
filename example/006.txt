@@ -1,0 +1,18 @@
+module Example ( map, successor ) where
+
+imports
+=======
+
+Integer (Int,+,*)
+
+terms
+=====
+
+declare map : forall a b. (a -> b) -> List a -> List b
+  as \f -> \xs -> replicate 5 16 + xs
+end
+
+declare successor : Int -> Int
+  as \x -> x + 1
+end
+
